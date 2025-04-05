@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Calculator - Fitness Club</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(rgba(18, 18, 18, 0.9), rgba(18, 18, 18, 0.9)), 
+                        url('Assets/bmi1.png') no-repeat center/cover;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #ffffff;
+        }
+
+        .container {
+            background: rgba(37, 37, 37, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 2.5rem;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            margin: 2rem;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        h1 {
+            color: #ffd700;
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: none;
+            border-radius: 10px;
+            background: #333;
+            color: #ffffff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            background: #404040;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+        }
+
+        input::placeholder {
+            color: #888;
+        }
+
+        button {
+            width: 100%;
+            padding: 1rem;
+            background: #ffd700;
+            color: #121212;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: #e6c200;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+        }
+
+        #result {
+            margin-top: 2rem;
+            font-size: 1.2rem;
+            font-weight: 400;
+            line-height: 1.4;
+        }
+
+        .healthy {
+            color: #00cc00;
+        }
+
+        .unhealthy {
+            color: #ff4444;
+        }
+
+        .progress-container {
+            width: 100%;
+            background: #333;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 1.5rem;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 25px;
+            text-align: center;
+            line-height: 25px;
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: width 1s ease-in-out;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 1.5rem;
+            color: #ffd700;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            color: #e6c200;
+            transform: translateX(-5px);
+        }
+
+        /* Updated Side Container Styling */
+        .side-container {
+            position: fixed;
+            right: 2rem; /* Adjusted from 0 to 2rem for better spacing */
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(37, 37, 37, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 20px;
+            width: 0;
+            max-width: 350px;
+            height: auto;
+            color: #ffffff;
+            overflow: hidden;
+            transition: width 0.5s ease-in-out;
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
+            z-index: 10;
+        }
+
+        .side-container.active {
+            width: 350px;
+        }
+
+        .side-container h3 {
+            color: #ffd700;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .side-container ul {
+            list-style: disc;
+            padding-left: 20px;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .side-container a {
+            color: #ffd700;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .side-container a:hover {
+            color: #e6c200;
+        }
+
+        .popup-message {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 10px;
+            font-weight: 600;
+            animation: popIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 2rem;
+                margin: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            input[type="number"], button {
+                font-size: 0.9rem;
+            }
+
+            #result {
+                font-size: 1rem;
+            }
+
+            .side-container {
+                position: relative;
+                top: auto;
+                right: auto;
+                transform: none;
+                width: 100%;
+                max-width: 100%;
+                border-radius: 20px;
+                margin: 1rem auto; /* Centered on mobile */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>BMI Calculator</h1>
+        <div class="input-group">
+            <input type="number" id="weight" placeholder="Enter weight (kg)" min="0" step="0.1">
+        </div>
+        <div class="input-group">
+            <input type="number" id="height" placeholder="Enter height (cm)" min="0" step="0.1">
+        </div>
+        <button id="calculate">Calculate BMI</button>
+        <div id="result"></div>
+        <div class="progress-container">
+            <div id="progressBar" class="progress-bar">0%</div>
+        </div>
+        <a href="index.html" class="back-btn">← Back to Home</a>
+    </div>
+    <div id="sideContainer" class="side-container"></div>
+
+    <script>
+        document.getElementById("calculate").addEventListener("click", function() {
+            const weight = parseFloat(document.getElementById("weight").value);
+            const height = parseFloat(document.getElementById("height").value) / 100;
+            const resultElement = document.getElementById("result");
+            const progressBar = document.getElementById("progressBar");
+            const sideContainer = document.getElementById("sideContainer");
+
+            // Input validation
+            if (isNaN(weight) || isNaN(height) || weight <= 0 || height <= 0) {
+                resultElement.innerHTML = "Please enter valid weight and height values.";
+                resultElement.className = "unhealthy";
+                progressBar.style.width = "0%";
+                progressBar.style.background = "#ff4444";
+                progressBar.innerHTML = "0%";
+                sideContainer.classList.remove("active");
+                sideContainer.innerHTML = "";
+                return;
+            }
+
+            // Calculate BMI
+            const bmi = weight / (height * height);
+            resultElement.innerHTML = `Your BMI: ${bmi.toFixed(1)}`;
+            resultElement.className = "";
+
+            let progressWidth = 0;
+            let progressColor = "#ffd700";
+            let message = "";
+            let popupMessage = "";
+            let sideContent = "";
+
+            // BMI Categories with Videos
+            if (bmi < 18.5) {
+                resultElement.className = "unhealthy";
+                message = "Underweight";
+                progressWidth = 20;
+                progressColor = "#ffcc00";
+                popupMessage = `<div class="popup-message" style="background: #ffcc00; color: #121212;">Take Care! You're Underweight.</div>`;
+                sideContent = `
+                    <h3>Precautions</h3>
+                    <ul>
+                        <li>Avoid skipping meals.</li>
+                        <li>Consult a doctor if unintentional weight loss.</li>
+                        <li>Stay hydrated.</li>
+                    </ul>
+                    <h3>Diet Plan</h3>
+                    <ul>
+                        <li><strong>Breakfast:</strong> Oatmeal with nuts & honey.</li>
+                        <li><strong>Snack:</strong> Peanut butter toast.</li>
+                        <li><strong>Lunch:</strong> Chicken with rice & avocado.</li>
+                    </ul>
+                    <h3>Recommended Video</h3>
+                    <ul>
+                  <iframe width="560" height="315" src="https://www.youtube.com/embed/P9epIWKGNgc?si=D_bsVWylnX1IDQjr" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </ul>
+                `;
+            } else if (bmi >= 18.5 && bmi < 25) {
+                resultElement.className = "healthy";
+                message = "Healthy Weight";
+                progressWidth = 50;
+                progressColor = "#00cc00";
+                popupMessage = `<div class="popup-message" style="background: #00cc00; color: #ffffff;">Congratulations! You're Healthy!</div>`;
+                sideContent = `
+                    <h3>Keep It Up!</h3>
+                    <ul>
+                        <li>Maintain a balanced diet.</li>
+                        <li>Exercise regularly.</li>
+                    </ul>
+                    <h3>Message for you</h3>
+                    <ul>
+                        <li>"You're on the right track! Maintain your fitness and well-being."</li>
+                    </ul>
+                `;
+            } else if (bmi >= 25 && bmi < 30) {
+                resultElement.className = "unhealthy";
+                message = "Overweight";
+                progressWidth = 75;
+                progressColor = "#ff5733";
+                popupMessage = `<div class="popup-message" style="background: #ff5733; color: #ffffff;">Heads Up! You're Overweight.</div>`;
+                sideContent = `
+                    <h3>Precautions</h3>
+                    <ul>
+                        <li>Reduce sugary foods.</li>
+                        <li>Increase physical activity.</li>
+                    </ul>
+                    <h3>Recommended Video</h3>
+                    <ul>
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/1lQ4bfQqRRo?si=HnhYE1Aisl0gFZwn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </ul>
+                `;
+            } else {
+                resultElement.className = "unhealthy";
+                message = "Obese";
+                progressWidth = 100;
+                progressColor = "#ff4444";
+                popupMessage = `<div class="popup-message" style="background: #ff4444; color: #ffffff;">Action Needed! You're Obese.</div>`;
+                sideContent = `
+                    <h3>Precautions</h3>
+                    <ul>
+                        <li>Consult a healthcare professional.</li>
+                        <li>Start with small workouts.</li>
+                    </ul>
+                    <h3>Recommended Video</h3>
+                    <ul>
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/joI6MmdzMYo?si=p8y9yPvBx6_wGnj4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </ul>
+                `;
+            }
+
+            // Update result, progress bar, and side container
+            resultElement.innerHTML += `<br>${message}${popupMessage}`;
+            progressBar.style.width = `${progressWidth}%`;
+            progressBar.style.background = progressColor;
+            progressBar.innerHTML = `${progressWidth}%`;
+
+            sideContainer.innerHTML = sideContent;
+            sideContainer.classList.add("active");
+        });
+    </script>
+</body>
+</html>
