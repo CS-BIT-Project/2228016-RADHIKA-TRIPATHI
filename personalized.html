@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personalized Workout Plan - Fitness Club</title>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(rgba(18, 18, 18, 0.9), rgba(18, 18, 18, 0.9)), 
+                        url('Assets/bb.jpg') no-repeat center/cover fixed;
+            min-height: 100vh;
+            color: #ffffff;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: rgba(28, 28, 28, 0.95);
+            padding: 1rem 4rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ffd700;
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background: #ffd700;
+            color: #121212;
+            transform: scale(1.05);
+        }
+
+        /* Main Content */
+        .container {
+            margin-top: 6rem;
+            text-align: center;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #ffd700;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            animation: slideIn 1s ease-out;
+        }
+
+        h1 i {
+            margin-right: 0.5rem;
+        }
+
+        .form-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            justify-items: center;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 10px;
+            background: #333;
+            color: #ffffff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            background: #404040;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+        }
+
+        input::placeholder {
+            color: #888;
+        }
+
+        button {
+            background: #ffd700;
+            color: #121212;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        button:hover {
+            background: #e6c200;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+        }
+
+        button i {
+            margin-right: 0.5rem;
+        }
+
+        #workoutPlanContainer {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .workout-card {
+            background: rgba(37, 37, 37, 0.95);
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: left;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease-in-out;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .workout-card.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .workout-card h3 {
+            font-size: 1.5rem;
+            color: #ffd700;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .workout-card h3 i {
+            margin-right: 0.5rem;
+        }
+
+        .workout-card p {
+            font-size: 1rem;
+            color: #e0e0e0;
+            margin-bottom: 1rem;
+        }
+
+        .workout-card iframe {
+            width: 100%;
+            height: 180px;
+            border-radius: 10px;
+            border: none;
+        }
+
+        /* Footer */
+        footer {
+            background: #1a1a1a;
+            padding: 2rem;
+            text-align: center;
+            color: #888;
+            font-size: 1rem;
+            width: 100%;
+            margin-top: 2rem;
+        }
+
+        /* Animations */
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem 2rem;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1rem;
+            }
+
+            .container {
+                margin-top: 8rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .form-group {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            input, select, button {
+                font-size: 0.9rem;
+            }
+
+            .workout-card h3 {
+                font-size: 1.3rem;
+            }
+
+            .workout-card p {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="logo">Fitness Club</div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="services.html" class="active">Services</a>
+            <a href="training.html">Training</a>
+            <a href="shop.html">Shop</a>
+            <a href="contact.html">Contact</a>
+            <a href="login.html">Login</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h1><i class="fas fa-dumbbell"></i> Personalized Workout Plan</h1>
+        <form id="workoutForm">
+            <div class="form-group">
+                <input type="number" id="age" placeholder="Age" min="1" required>
+                <input type="number" id="weight" placeholder="Weight (kg)" min="1" step="0.1" required>
+                <select id="goal" required>
+                    <option value="" disabled selected>Select Goal</option>
+                    <option value="weight_loss">Weight Loss</option>
+                    <option value="muscle_gain">Muscle Gain</option>
+                    <option value="endurance">Endurance</option>
+                </select>
+                <select id="experience" required>
+                    <option value="" disabled selected>Select Experience</option>
+                    <option value="beginner">Beginner</option>
+                    <option value="intermediate">Intermediate</option>
+                    <option value="advanced">Advanced</option>
+                </select>
+            </div>
+            <button type="submit"><i class="fas fa-running"></i> Generate Plan</button>
+        </form>
+        <div id="workoutPlanContainer"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2025 Fitness Club. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        document.getElementById("workoutForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const age = parseInt(document.getElementById("age").value);
+            const weight = parseFloat(document.getElementById("weight").value);
+            const goal = document.getElementById("goal").value;
+            const experience = document.getElementById("experience").value;
+            const container = document.getElementById("workoutPlanContainer");
+
+            // Input validation
+            if (isNaN(age) || isNaN(weight) || age <= 0 || weight <= 0) {
+                container.innerHTML = "<p style='color: #ff4444;'>Please enter valid age and weight.</p>";
+                return;
+            }
+
+            const weeklyPlan = generateWeeklyWorkoutPlan(goal, experience);
+            container.innerHTML = '';
+
+            if (!weeklyPlan) {
+                container.innerHTML = "<p style='color: #ff4444;'>No workout plan available for this selection.</p>";
+                return;
+            }
+
+            Object.keys(weeklyPlan).forEach((day, index) => {
+                const planDiv = document.createElement('div');
+                planDiv.classList.add('workout-card');
+                planDiv.innerHTML = `
+                    <h3><i class="far fa-calendar-alt"></i> ${day}</h3>
+                    <p>${weeklyPlan[day]}</p>
+                `;
+
+                const videoUrl = getWorkoutVideo(goal);
+                const videoIframe = document.createElement('iframe');
+                videoIframe.src = videoUrl;
+                videoIframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+                videoIframe.allowFullscreen = true;
+
+                planDiv.appendChild(videoIframe);
+                container.appendChild(planDiv);
+
+                setTimeout(() => {
+                    planDiv.classList.add('show');
+                }, index * 200);
+            });
+        });
+
+        function generateWeeklyWorkoutPlan(goal, experience) {
+            const plans = {
+                "weight_loss": {
+                    "beginner": { "Monday": "Cardio + Bodyweight", "Tuesday": "Strength", "Wednesday": "Yoga", "Thursday": "HIIT", "Friday": "Legs", "Saturday": "Cycling", "Sunday": "Rest" },
+                    "intermediate": { "Monday": "HIIT + Cardio", "Tuesday": "Core Strength", "Wednesday": "Yoga", "Thursday": "Full Body", "Friday": "Legs", "Saturday": "Running", "Sunday": "Rest" },
+                    "advanced": { "Monday": "Advanced HIIT", "Tuesday": "Strength Circuit", "Wednesday": "Power Yoga", "Thursday": "Cardio Blast", "Friday": "Legs + Core", "Saturday": "Long Run", "Sunday": "Active Recovery" }
+                },
+                "muscle_gain": {
+                    "beginner": { "Monday": "Upper Body", "Tuesday": "Legs", "Wednesday": "Rest", "Thursday": "Full Body", "Friday": "Arms", "Saturday": "HIIT", "Sunday": "Rest" },
+                    "intermediate": { "Monday": "Chest + Triceps", "Tuesday": "Back + Biceps", "Wednesday": "Legs", "Thursday": "Shoulders", "Friday": "Full Body", "Saturday": "Core", "Sunday": "Rest" },
+                    "advanced": { "Monday": "Push Day", "Tuesday": "Pull Day", "Wednesday": "Legs", "Thursday": "Upper Body Power", "Friday": "Full Body Hypertrophy", "Saturday": "Core + Cardio", "Sunday": "Rest" }
+                },
+                "endurance": {
+                    "beginner": { "Monday": "Running", "Tuesday": "Cycling", "Wednesday": "Swimming", "Thursday": "Strength", "Friday": "HIIT", "Saturday": "Long Run", "Sunday": "Rest" },
+                    "intermediate": { "Monday": "Tempo Run", "Tuesday": "Cycling Intervals", "Wednesday": "Swim Drills", "Thursday": "Strength Endurance", "Friday": "HIIT", "Saturday": "Long Distance", "Sunday": "Rest" },
+                    "advanced": { "Monday": "Interval Running", "Tuesday": "Hill Cycling", "Wednesday": "Open Water Swim", "Thursday": "Strength + Power", "Friday": "High-Intensity Circuit", "Saturday": "Ultra Endurance", "Sunday": "Active Recovery" }
+                }
+            };
+            return plans[goal]?.[experience] || null;
+        }
+
+        function getWorkoutVideo(goal) {
+            const videos = {
+                "weight_loss": "https://www.youtube.com/embed/X3q5e1pV4pc",
+                "muscle_gain": "https://www.youtube.com/embed/UoC_O3HzsH0",
+                "endurance": "https://www.youtube.com/embed/Mh_3ddy9zbY"
+            };
+            return videos[goal] || "https://www.youtube.com/embed/dQw4w9WgXcQ";
+        }
+    </script>
+</body>
+</html>
